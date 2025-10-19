@@ -24,11 +24,18 @@ public final class Vector {
 
     // Скалярное произведение с другим вектором
     public double dotProduct(Vector other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Вектор не может быть null");
+        }
         return this.x * other.x + this.y * other.y + this.z * other.z;
     }
 
     // Векторное произведение с другим вектором
     public Vector crossProduct(Vector other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Вектор не может быть null");
+        }
+
         double newX = this.y * other.z - this.z * other.y;
         double newY = this.z * other.x - this.x * other.z;
         double newZ = this.x * other.y - this.y * other.x;
@@ -37,6 +44,10 @@ public final class Vector {
 
     // Вычисляет косинус угла между векторами
     public double cosineAngle(Vector other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Вектор не может быть null");
+        }
+
         double dot = this.dotProduct(other);
         double magProduct = this.length() * other.length();
 
@@ -49,11 +60,17 @@ public final class Vector {
 
     // Сумма векторов
     public Vector add(Vector other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Вектор не может быть null");
+        }
         return new Vector(this.x + other.x, this.y + other.y, this.z + other.z);
     }
 
     // Разность векторов
     public Vector subtract(Vector other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Вектор не может быть null");
+        }
         return new Vector(this.x - other.x, this.y - other.y, this.z - other.z);
     }
 
@@ -74,5 +91,10 @@ public final class Vector {
         }
 
         return vectors;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%.2f, %.2f, %.2f)", x, y, z);
     }
 }
