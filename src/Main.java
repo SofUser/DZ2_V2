@@ -4,91 +4,68 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Создание векторов.
-        Vector v1 = createVectorFromInput(scanner, "первого");
-        Vector v2 = createVectorFromInput(scanner, "второго");
-        // Демонстрация операций.
-        demonstrateVectorOperations(v1, v2);
-        // Генерация случайных векторов.
-        demonstrateRandomVectors(scanner);
+        // 1. Демонстрация конструктора
+        Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(4, 5, 6);
+        System.out.println("Вектор v1 = " + v1);
+        System.out.println("Вектор v2 = " + v2);
+
+        // 2. Демонстрация вычисления длины вектора
+        System.out.printf("Длина v1 = %.2f\n", v1.length());
+        System.out.printf("Длина v2 = %.2f\n", v2.length());
+
+        // 3. Демонстрация скалярного произведения
+        double dotProduct = v1.dotProduct(v2);
+        System.out.printf("v1 ⋅ v2 = %.2f\n", dotProduct);
+
+        // 4. Демонстрация векторного произведения
+        Vector crossProduct = v1.crossProduct(v2);
+        System.out.println("v1 × v2 = " + crossProduct);
+
+        // 5. Демонстрация угла между векторами (косинус угла)
+        double cosine = v1.cosineAngle(v2);
+        System.out.printf("Косинус угла между v1 и v2 = %.4f\n", cosine);
+        double angleRad = Math.acos(cosine);
+        double angleDeg = Math.toDegrees(angleRad);
+        System.out.printf("Угол между векторами = %.2f°\n", angleDeg);
+
+        // 6. Демонстрация суммы и разности
+        Vector sum = v1.add(v2);
+        Vector diff = v1.subtract(v2);
+        System.out.println("v1 + v2 = " + sum);
+        System.out.println("v1 - v2 = " + diff);
+
+        // 7. Демонстрация неизменяемости (immutable)
+        System.out.println("Исходный v1 = " + v1);
+        System.out.println("После операций v1 = " + v1 + " (не изменился!)");
+
+        // 8. Статический метод для генерации случайных векторов
+        int n = getNumberOfVectors(scanner);
+        Vector[] randomVectors = Vector.generateRandomVectors(n);
+
+        System.out.println("Сгенерированные векторы:");
+        for (int i = 0; i < randomVectors.length; i++) {
+            System.out.printf("Вектор %d: %s (длина = %.2f)\n",
+                                i + 1, randomVectors[i], randomVectors[i].length());
+        }
 
         scanner.close();
-        System.out.println("\nПрограмма завершена.");
     }
 
-    private static Vector createVectorFromInput(Scanner scanner, String vectorName) {
-        double x = 0, y = 0, z = 0;
-
-        System.out.println("\nВведите координаты " + vectorName + " вектора:");
-
-        x = getDoubleInput(scanner, "X");
-        y = getDoubleInput(scanner, "Y");
-        z = getDoubleInput(scanner, "Z");
-
-        return new Vector(x, y, z);
-    }
-
-    private static double getDoubleInput(Scanner scanner, String coordinate) {
+    private static int getNumberOfVectors(Scanner scanner) {
         while (true) {
-            System.out.print(coordinate + " = ");
-            if (scanner.hasNextDouble()) {
-                return scanner.nextDouble();
-            } else {
-                System.out.println("Ошибка! Введите число.");
-                scanner.next();
-            }
-        }
-    }
-
-    private static void demonstrateVectorOperations(Vector v1, Vector v2) {
-        System.out.println("Вектор 1: " + v1);
-        System.out.println("Вектор 2: " + v2);
-
-        // Длина векторов
-        System.out.printf("Длина вектора 1: %.2f\n", v1.length());
-        System.out.printf("Длина вектора 2: %.2f\n", v2.length());
-
-        // Скалярное произведение
-        System.out.printf("Скалярное произведение: %.2f\n", v1.dotProduct(v2));
-
-        // Векторное произведение
-        Vector cross = v1.crossProduct(v2);
-        System.out.println("Векторное произведение: " + cross);
-
-        // Косинус угла
-        double cosine = v1.cosineAngle(v2);
-        System.out.printf("Косинус угла между векторами: %.2f\n", cosine);
-
-        // Сумма и разность
-        System.out.println("Сумма векторов: " + v1.add(v2));
-        System.out.println("Разность векторов: " + v1.subtract(v2));
-    }
-
-    private static void demonstrateRandomVectors(Scanner scanner) {
-        int n = 0;
-        while (n <= 0) {
-            System.out.print("Введите количество случайных векторов для генерации (>0): ");
+            System.out.print("Введите количество векторов для генерации (N): ");
             if (scanner.hasNextInt()) {
-                n = scanner.nextInt();
-                if (n <= 0) {
+                int n = scanner.nextInt();
+                if (n > 0) {
+                    return n;
+                } else {
                     System.out.println("Ошибка! Число должно быть положительным.");
                 }
             } else {
                 System.out.println("Ошибка! Введите целое число.");
-                scanner.next(); // очистка некорректного ввода
+                scanner.next();
             }
-        }
-
-        Vector[] randomVectors = Vector.generateRandomVectors(n);
-        System.out.println("\nСгенерированные случайные векторы:");
-        for (int i = 0; i < randomVectors.length; i++) {
-            System.out.println((i + 1) + ". " + randomVectors[i]);
-        }
-
-        // Демонстрация операций с первыми двумя векторами
-        if (n >= 2) {
-            System.out.println("\nОперации с первыми двумя случайными векторами:");
-            demonstrateVectorOperations(randomVectors[0], randomVectors[1]);
         }
     }
 }
